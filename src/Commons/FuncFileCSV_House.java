@@ -12,18 +12,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class FuncFileCSV_House {
-    private static final String COMMA_DELIMITER = ", ";
+    private static final String COMMA_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final String fileNameHouse = "src/Data/House.csv";
-    private static final String FILE_HEADER_HOUSE = "id,serviceName,areaRoom,cost," +
-            "maxPersion,rental,standardRoom,serviceOther,floor";
 
     public static void writeHousetoCSV(ArrayList<House> listService) {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(fileNameHouse);
-            fileWriter.append(FILE_HEADER_HOUSE);
-            fileWriter.append(NEW_LINE_SEPARATOR);
+
             for (House house : listService) {
                 fileWriter.append(house.getId());
                 fileWriter.append(COMMA_DELIMITER);

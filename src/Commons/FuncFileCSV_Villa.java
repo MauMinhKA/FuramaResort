@@ -20,7 +20,7 @@ public class FuncFileCSV_Villa {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(fileNameVilla);
-            fileWriter.append(NEW_LINE_SEPARATOR);
+
             for (Villa villa : listVilla) {
                 fileWriter.append(villa.getId());
                 fileWriter.append(COMMA_DELIMITER);
