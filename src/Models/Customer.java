@@ -1,17 +1,25 @@
 package Models;
 
 import Commons.FuncFileCSV_Customer;
+import Commons.FuncFileCSV_House;
+import Commons.FuncFileCSV_Room;
+import Commons.FuncFileCSV_Villa;
 import Packge_check.Check_Customer;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import static Packge_check.Check_Customer.CheckDataInputGender;
 import static Packge_check.Check_Customer.CheckTrueData;
 
 public class Customer {
-    private String nameCustomer, gender, birthdayCustomer, email, typeCustomer, address,numberPhone;
+    private static ArrayList<Villa> listVilla=new ArrayList<>();
+    private static ArrayList<House> listHouse=new ArrayList<>();
+    private static ArrayList<Room> listRoom=new ArrayList<>();
+    private  static Scanner scanner=new Scanner(System.in);
+    private String nameCustomer, gender, birthdayCustomer, email, typeCustomer, address, numberPhone;
     private int cmnd;
     private Services services;
 
@@ -108,14 +116,13 @@ public class Customer {
     public static void addNewCustomer() {
         ArrayList<Customer> listCustomer = new ArrayList<>();
         listCustomer = FuncFileCSV_Customer.getFileCSVtoListCustomer();
-        Scanner scanner = new Scanner(System.in);
         Customer customer = new Customer();
-//        customer.setNameCustomer(Check_Customer.CheckNameCustomer());
-//        customer.setGender(Check_Customer.CheckGenderCustomer(CheckTrueData(CheckDataInputGender())));
-//        customer.setBirthdayCustomer(Check_Customer.CheckBirthDay());
-//        System.out.print("Enter AddressCustomer: ");
-//        customer.setAddress(scanner.nextLine());
-//        customer.setCmnd(Check_Customer.CheckIdCard());
+        customer.setNameCustomer(Check_Customer.CheckNameCustomer());
+        customer.setGender(Check_Customer.CheckGenderCustomer(CheckTrueData(CheckDataInputGender())));
+        customer.setBirthdayCustomer(Check_Customer.CheckBirthDay());
+        System.out.print("Enter AddressCustomer: ");
+        customer.setAddress(scanner.nextLine());
+        customer.setCmnd(Check_Customer.CheckIdCard());
         customer.setEmail(Check_Customer.CheckEmailCustomer());
         System.out.print("Enter TypeCustomer: ");
         customer.setTypeCustomer(scanner.nextLine());
@@ -125,25 +132,119 @@ public class Customer {
         FuncFileCSV_Customer.writeCustomertoCSV(listCustomer);
     }
 
-    public static void showInfoCustomer() {
+    public static void showInformationCustomer() {
         ArrayList<Customer> listCustomer = new ArrayList<>();
         listCustomer = FuncFileCSV_Customer.getFileCSVtoListCustomer();
-        for (Customer villa : listCustomer) {
+        listCustomer.sort(new Comparator<Customer>() {
+            @Override
+            public int compare(Customer customer, Customer t1) {
+                if (customer.getNameCustomer().equals(t1.getNameCustomer())) {
+                    return customer.getBirthdayYear() - t1.getBirthdayYear();
+                } else {
+                    return customer.getNameCustomer().compareTo(t1.getNameCustomer());
+                }
+            }
+        });
+        for (Customer customer : listCustomer) {
             System.out.println("------------***------------");
-            System.out.println("Name: " + villa.getNameCustomer());
-            System.out.println("Gender: " + villa.getGender());
-            System.out.println("BirthDay: " + villa.getBirthdayCustomer());
-            System.out.println("Address: " + villa.getAddress());
-            System.out.println("CMND: " + villa.getCmnd());
-            System.out.println("Email: " + villa.getEmail());
-            System.out.println("TypeCustomer: " + villa.getTypeCustomer());
-            System.out.println("NumberPhone: " + villa.getNumberPhone());
+            System.out.println("Name: " + customer.getNameCustomer());
+            System.out.println("Gender: " + customer.getGender());
+            System.out.println("BirthDay: " + customer.getBirthdayCustomer());
+            System.out.println("Address: " + customer.getAddress());
+            System.out.println("CMND: " + customer.getCmnd());
+            System.out.println("Email: " + customer.getEmail());
+            System.out.println("TypeCustomer: " + customer.getTypeCustomer());
+            System.out.println("NumberPhone: " + customer.getNumberPhone());
 
         }
     }
 
-    public static void main(String[] args) {
-//        showInfoCustomer();
-        addNewCustomer();
+    private int getBirthdayYear() {
+        String temp = "";
+        for (int i = getBirthdayCustomer().length() - 4; i < getBirthdayCustomer().length(); i++) {
+            temp += getBirthdayCustomer().charAt(i);
+        }
+        int YearBirthday = Integer.parseInt(temp);
+        return YearBirthday;
     }
+
+    private static void addNewBooking() {
+        System.out.println("t1.\tBooking Villa.\n"
+                + "2.\tBooking House.\n"
+                + "3.\tBooking Room.\n"
+                + "4.\tBack to menu.\n"
+        );
+        String choose=scanner.nextLine();
+        switch (choose){
+            case "1":
+                bookingVilla();
+                break;
+            case "2":
+                bookingRoom();
+                break;
+            case "3":
+                bookingHouse();
+                break;
+            case "4":
+                addNewBooking();
+                break;
+            default:
+                System.out.println("fail!!!!!!!!");
+        }
+    }
+
+    private static void bookingHouse() {
+        listHouse= FuncFileCSV_House.getFileCSVtoListHouse();
+        for (House house:listHouse){
+            System.out.println("------------***------------");
+            System.out.println("id: "+house.getId());
+            System.out.println("name: "+house.getServiceName());
+            System.out.println("AreaRoom: "+house.getAreaRoom());
+            System.out.println("Cost: "+house.getCost());
+            System.out.println("MaxPerson: "+house.getMaxPerson());
+            System.out.println("RentalType: "+house.getRentalType());
+            System.out.println("StandardRoom: "+house.getStandardRoom());
+            System.out.println("ServicesOther: "+house.getServiceOther());
+            System.out.println("Floor: "+house.getFloor());
+        }
+    }
+
+    private static void bookingRoom() {
+        listRoom= FuncFileCSV_Room.getFileCSVtoListRoom();
+        for (Room room:listRoom){
+            System.out.println("------------***------------");
+            System.out.println("id: "+room.getId());
+            System.out.println("name: "+room.getServiceName());
+            System.out.println("AreaRoom: "+room.getAreaRoom());
+            System.out.println("Cost: "+room.getCost());
+            System.out.println("MaxPerson: "+room.getMaxPerson());
+            System.out.println("RentalType: "+room.getRentalType());
+            System.out.println("ServiceFree: "+room.getServiceFree());
+        }
+    }
+
+    private static void bookingVilla() {
+        listVilla= FuncFileCSV_Villa.getFileCSVtoListVilla();
+        for (Villa villa:listVilla){
+            System.out.println("------------***------------");
+            System.out.println("id: "+villa.getId());
+            System.out.println("name: "+villa.getServiceName());
+            System.out.println("AreaRoom: "+villa.getAreaRoom());
+            System.out.println("Cost: "+villa.getCost());
+            System.out.println("MaxPerson: "+villa.getMaxPerson());
+            System.out.println("RentalType: "+villa.getRentalType());
+            System.out.println("StandardRoom: "+villa.getStandardRoom());
+            System.out.println("ServicesOther: "+villa.getServiceOther());
+            System.out.println("PoolArea: "+villa.getPoolArea());
+            System.out.println("Floor: "+villa.getFloor());
+        }
+    }
+
+    public static void main(String[] args) {
+//        showInformationCustomer();
+//        addNewCustomer();
+        addNewBooking();
+    }
+
+
 }

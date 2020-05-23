@@ -92,7 +92,7 @@ public class Check_Customer {
         while (true) {
             scanner = new Scanner(System.in);
             System.out.print("Enter birthday (ex: 30/04/2020): ");
-            String birthday = scanner.nextLine();
+            String  birthday = scanner.nextLine();
             LocalDate date = LocalDate.now();
             if (birthday.matches(regex)) {
                 String temp = "";
@@ -124,6 +124,7 @@ public class Check_Customer {
         }
 
     }
+
 
 }
 
