@@ -5,9 +5,11 @@ import Commons.FuncFileCSV_Villa;
 import Models.House;
 import Models.Room;
 import Models.Villa;
-import Packge_check.Check;
+import Packge_check.Check_Service;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import static Packge_check.Check_Service.CheckNameData;
 
 public class MainController {
     private static Scanner scanner=new Scanner(System.in);
@@ -50,7 +52,7 @@ public class MainController {
                 break;
             default:
                 System.out.println("Fail!! Please choose again!");
-                
+
         }
     }
 
@@ -87,19 +89,16 @@ public class MainController {
     private static void addNewVilla() {
         listVilla=FuncFileCSV_Villa.getFileCSVtoListVilla();
         Villa villa=new Villa();
-        villa.setId(Check.checkIdServices("^SVVL\\-\\d{4}$","SVLL"));
-        villa.setServiceName(Check.CheckNameServices());
-        villa.setAreaRoom(Check.checkAreaRoomAndPool("Room"));
-        villa.setCost(Check.checkCost());
-        villa.setMaxPerson(Check.checkMaxPerson());
-        System.out.print("Enter RentalType: ");
-        villa.setRentalType(scanner.nextLine());
-        System.out.print("Enter StandardRoom: ");
-        villa.setStandardRoom(scanner.nextLine());
-        System.out.print("Enter ServicesOther: ");
-        villa.setServiceOther(scanner.nextLine());
-        villa.setPoolArea(Check.checkAreaRoomAndPool("Pool"));
-        villa.setFloor(Check.checkFloor());
+        villa.setId(Check_Service.checkIdServices("^SVVL\\-\\d{4}$","SVLL"));
+        villa.setServiceName(Check_Service.CheckNameServices());
+        villa.setAreaRoom(Check_Service.checkAreaRoomAndPool("Room"));
+        villa.setCost(Check_Service.checkCost());
+        villa.setMaxPerson(Check_Service.checkMaxPerson());
+        villa.setRentalType(Check_Service.TrueData(CheckNameData("RentalType")));
+        villa.setStandardRoom(Check_Service.TrueData(CheckNameData("StandardRoom")));
+        villa.setServiceOther(Check_Service.checkServiceOther(Check_Service.TrueData(Check_Service.CheckNameData("ServiceOther"))));
+        villa.setPoolArea(Check_Service.checkAreaRoomAndPool("Pool"));
+        villa.setFloor(Check_Service.checkFloor());
         listVilla.add(villa);
         FuncFileCSV_Villa.writeVillatoCSV(listVilla);
         System.out.println("Add new Villa success! Enter to continue..");
@@ -110,14 +109,13 @@ public class MainController {
     private static void addNewRoom() {
         listRoom= FuncFileCSV_Room.getFileCSVtoListRoom();
         Room house=new Room();
-        house.setId(Check.checkIdServices("^SVRO\\-\\d{4}$","SVRO"));
-        house.setServiceName(Check.CheckNameServices());
-        house.setAreaRoom(Check.checkAreaRoomAndPool("Room"));
-        house.setCost(Check.checkCost());
-        house.setMaxPerson(Check.checkMaxPerson());
-        System.out.println("Enter RentalType!");
-        house.setRentalType(scanner.nextLine());
-        house.setServiceFree(Check.checkServiceFree());
+        house.setId(Check_Service.checkIdServices("^SVRO\\-\\d{4}$","SVRO"));
+        house.setServiceName(Check_Service.CheckNameServices());
+        house.setAreaRoom(Check_Service.checkAreaRoomAndPool("Room"));
+        house.setCost(Check_Service.checkCost());
+        house.setMaxPerson(Check_Service.checkMaxPerson());
+        house.setRentalType(Check_Service.TrueData(CheckNameData("RentalType")));
+//      house.setServiceFree(Check.checkServiceFree());
         listRoom.add(house);
         FuncFileCSV_Room.writeRoomtoCSV(listRoom);
         System.out.println("Add new Room success! Enter to continue..");
@@ -128,18 +126,15 @@ public class MainController {
     private static void addNewHouse() {
         listHouse= FuncFileCSV_House.getFileCSVtoListHouse();
         House house=new House();
-        house.setId(Check.checkIdServices("^SVHO\\-\\d{4}$","SVHO"));
-        house.setServiceName(Check.CheckNameServices());
-        house.setAreaRoom(Check.checkAreaRoomAndPool("Room"));
-        house.setCost(Check.checkCost());
-        house.setMaxPerson(Check.checkMaxPerson());
-        System.out.print("Enter RentalType: ");
-        house.setRentalType(scanner.nextLine());
-        System.out.print("Enter StandardRoom: ");
-        house.setStandardRoom(scanner.nextLine());
-        System.out.print("Enter ServicesOther: ");
-        house.setServiceOther(scanner.nextLine());
-        house.setFloor(Check.checkFloor());
+        house.setId(Check_Service.checkIdServices("^SVHO\\-\\d{4}$","SVHO"));
+        house.setServiceName(Check_Service.CheckNameServices());
+        house.setAreaRoom(Check_Service.checkAreaRoomAndPool("Room"));
+        house.setCost(Check_Service.checkCost());
+        house.setMaxPerson(Check_Service.checkMaxPerson());
+        house.setRentalType(Check_Service.TrueData(CheckNameData("RentalType")));
+        house.setStandardRoom(Check_Service.TrueData(CheckNameData("StandardRoom")));
+        house.setServiceOther(Check_Service.checkServiceOther(Check_Service.TrueData(Check_Service.CheckNameData("ServiceOther"))));
+        house.setFloor(Check_Service.checkFloor());
 
         listHouse.add(house);
         FuncFileCSV_House.writeHousetoCSV(listHouse);
